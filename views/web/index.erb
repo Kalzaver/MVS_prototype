@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title><%= controller()->name() + ": " + controller()->activeAction() %></title>
+</head>
+<body>
+
+<h1>Главное меню</h1>
+<p>Достпные к заполнению шаблоны документов РКФ</p>
+<div class="container">
+  <button type="button"><%== linkTo("племенной смотр", urla("changePage")) %></button>
+  <button type="button"><%== linkTo("отчёт главного судьи", urla("mainReport")) %></button>
+  <br>
+  <button type="button"><%== linkTo("заявка на проведение племенного смотра", urla("ReqBreed")) %></button>
+  <button type="button"><%== linkTo("заявка на присвоение титула", urla("ReqTitul")) %></button>
+  <br>
+  <button type="button"><%== linkTo("реестр получения документов", urla("Reesrt")) %></button>
+</div>
+
+</body>
+</html>
