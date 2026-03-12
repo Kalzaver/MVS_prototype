@@ -12,7 +12,7 @@ void WebController::index()
     // write code
 	QString title = "Вы в главном меню"; // Или данные из БД
 	texport(title); // Экспортируем переменную в View
-	render();
+	render(); //для тестового коммита
 }
 
 void WebController::changePage()
