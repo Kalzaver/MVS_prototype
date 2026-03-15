@@ -5,14 +5,26 @@
 #include <QNetworkReply>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QSettings>
 
+bool WebController::loadConfig()
+{
+    QSettings settings("C:/treeFrogProject/myapp/config.ini", QSettings::IniFormat);
+    m_pythonPath = settings.value("General/python_path").toString();
+    m_templatePath = settings.value("TemplateBreed/template").toString();
+    m_copyPath = settings.value("TemplateBreed/copy").toString();
+    m_jsonPath = settings.value("TemplateBreed/json").toString();
+    m_scriptPath = settings.value("TemplateBreed/script").toString();
+    m_scriptPathCopy = settings.value("TemplateBreed/script_copy").toString();
+    return true;
+}
 
 void WebController::index()
 {
     // write code
 	QString title = "Вы в главном меню"; // Или данные из БД
 	texport(title); // Экспортируем переменную в View
-	render(); //для тестового коммита
+	render();
 }
 
 void WebController::changePage()
@@ -38,20 +50,18 @@ void WebController::mainReport()
 
 void WebController::copyScript()
 {
-    QString source = "C:/treeFrogProject/myapp/wordtempl/breedTemplates/template.docx";
-    QString dest = "C:/treeFrogProject/myapp/wordtempl/breedTemplates/copy_template.docx";
-
     // Удаляем старую копию, если существует
-    if (QFile::exists(dest)) {
-        QFile::remove(dest);
-    }
+    if (QFile::exists(m_copyPath)) 
+        QFile::remove(m_copyPath);
 
-    // Копируем файл
-    if (!QFile::copy(source, dest)) {
-        qWarning() << "Не удалось скопировать файл:" << source;
+    // Копируем файл синхронно
+    if (!QFile::copy(m_templatePath, m_copyPath)) 
+    {
+        qWarning() << "Не удалось скопировать файл:" << m_templatePath;
     }
-    else {
-        qDebug() << "Файл скопирован успешно";
+    else 
+    {
+        qDebug() << "Файл скопирован успешно:" << m_copyPath;
     }
 }
 
@@ -59,15 +69,15 @@ void WebController::replaceScript()
 {
     QString python = "C:/Users/lukan/AppData/Local/Programs/Python/Python312/python.exe";
     QString script = "C:/treeFrogProject/myapp/wordtempl/textEdit_v2.py";
-    //QString json = "C:/treeFrogProject/myapp/data_from_web.json";
-    //QString docx = "C:/treeFrogProject/myapp/wordtempl/breedTemplates/copy_template.docx";
-
-    QProcess::startDetached(python, { script});
+    QProcess::startDetached(python, { script });
 }
 
 void WebController::submitForm()
 {
-    if (httpRequest().method() != Tf::Post) {
+    loadConfig();
+
+    if (httpRequest().method() != Tf::Post) 
+    {
         renderErrorResponse(Tf::NotFound);
         return;
     }
@@ -86,24 +96,29 @@ void WebController::submitForm()
     biteGroups["bite_onrow"] = qMakePair(QString("171"), QString("070"));
     biteGroups["bite_meat"] = qMakePair(QString("181"), QString("080"));
 
-    for (auto it = biteGroups.begin(); it != biteGroups.end(); ++it) {
+    for (auto it = biteGroups.begin(); it != biteGroups.end(); ++it) 
+    {
         QString groupName = it.key();
         QString keyYes = it.value().first;
         QString keyNo = it.value().second;
 
-        if (data.contains(groupName)) {
+        if (data.contains(groupName)) 
+        {
             QString selected = data[groupName].toString(); // "yes" или "no"
-            if (selected == "yes") {
+            if (selected == "yes") 
+            {
                 data[keyYes] = "+";
                 data[keyNo] = " ";  // пробел (можно заменить на пустую строку, если нужно)
             }
-            else { // "no"
+            else 
+            { // "no"
                 data[keyYes] = " ";
                 data[keyNo] = "+";
             }
             data.remove(groupName); // убираем служебный ключ
         }
-        else {
+        else 
+        {
             // Если группа не была отправлена (пользователь ничего не выбрал) – ставим пробелы по умолчанию
             data[keyYes] = " ";
             data[keyNo] = " ";
@@ -112,46 +127,48 @@ void WebController::submitForm()
 
     QStringList noiseOptions = { "aaa", "bbb", "ccc", "ddd" };
     QString selectedNoise = data.value("noiseReaction").toString();
-    for (const QString& opt : noiseOptions) {
+    for (const QString& opt : noiseOptions) 
         data[opt] = (opt == selectedNoise) ? "+" : "-";
-    }
+    
     data.remove("noiseReaction");
 
     QStringList noise2 = { "eee", "fff", "ggg", "hhh" };
     QString selected2 = data.value("noise2").toString();
-    for (const QString& opt : noise2) {
+    for (const QString& opt : noise2) 
         data[opt] = (opt == selected2) ? "+" : "-";
-    }
+  
     data.remove("noise2");
 
     QStringList teethObsv1 = { "kkk", "lll", "mmm", "nnn", "ooo"};
     QString selected3 = data.value("teethObsv1").toString();
-    for (const QString& opt : teethObsv1) {
+    for (const QString& opt : teethObsv1) 
         data[opt] = (opt == selected3) ? "+" : "-";
-    }
+    
     data.remove("teethObsv1");
 
     QStringList teethObsv2 = { "qqq", "rrr", "sss", "ttt", "uuu" };
     QString selected4 = data.value("teethObsv2").toString();
-    for (const QString& opt : teethObsv2) {
+    for (const QString& opt : teethObsv2) 
         data[opt] = (opt == selected4) ? "+" : "-";
-    }
+    
     data.remove("teethObsv2");
 
     QStringList showtime = { "vvv", "www", "xxx", "yyy", "zzz" };
     QString selected5 = data.value("showtime").toString();
-    for (const QString& opt : showtime) {
+    for (const QString& opt : showtime) 
         data[opt] = (opt == selected5) ? "+" : "-";
-    }
+    
     data.remove("showtime");
 
     QJsonDocument doc = QJsonDocument::fromVariant(data);
-    QFile file("C:/treeFrogProject/myapp/wordtempl/breedTemplates/data_from_web.json");
-    if (file.open(QIODevice::WriteOnly)) {
+    QFile file(m_jsonPath);
+    if (file.open(QIODevice::WriteOnly)) 
+    {
         file.write(doc.toJson());
         file.close();
     }
-    else {
+    else 
+    {
         qWarning() << "Не удалось открыть файл для записи JSON";
     }
 
