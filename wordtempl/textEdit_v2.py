@@ -1,20 +1,45 @@
+import sys
 import json
 import configparser
 import os
 from docx import Document
 
-INI_PATH = r'C:/treeFrogProject/myapp/config.ini'
+def mass_replace(config_path, section):
+    print(f"\n=== Замена начата (Конфиг: {config_path}, Секция: {section}) ===")
 
-def mass_replace(json_path, docx_path):
-    print(f"\n=== Замена начата ===")
+    config = configparser.ConfigParser()
+    if not config.read(config_path, encoding='utf-8'):
+        print(f"Ошибка: Не удалось прочитать конфиг {config_path}")
+        return
+
+    if not config.has_section(section):
+        print(f"Ошибка: Секция [{section}] не найдена в конфиге")
+        return
+
+    try:
+        json_path = config.get(section, 'json')
+        docx_path = config.get(section, 'copy')
+    except Exception as e:
+        print(f"Ошибка чтения путей из конфига: {e}")
+        return
+
+    if not os.path.exists(json_path):
+        print(f"Ошибка: JSON файл не найден: {json_path}")
+        return
+    if not os.path.exists(docx_path):
+        print(f"Ошибка: DOCX файл не найден: {docx_path}")
+        return
 
     with open(json_path, 'r', encoding='utf-8') as f:
         replacements = json.load(f)
 
     doc = Document(docx_path)
 
+    def replace_in_text_element(element):
+        for para in element.paragraphs:
+            replace_in_paragraph(para)
+
     def replace_in_paragraph(paragraph):
-        # Собираем текст из всех «прогонов» (runs) параграфа
         full_text = ''.join([run.text for run in paragraph.runs])
         new_text = full_text
         for key, value in replacements.items():
@@ -22,7 +47,6 @@ def mass_replace(json_path, docx_path):
 
         if new_text != full_text:
             if paragraph.runs:
-                # Записываем новый текст в первый run, остальные очищаем
                 paragraph.runs[0].text = new_text
                 for run in paragraph.runs[1:]:
                     run.text = ''
@@ -37,28 +61,20 @@ def mass_replace(json_path, docx_path):
                     replace_in_paragraph(para)
 
     doc.save(docx_path)
-    print(f"=== Замена завершена. Файл сохранен: {docx_path} ===\n")
+    print("=== Замена завершена ===\n")
+
+# if __name__ == "__main__":
+#     config_file = "C:/treeFrogProject/myapp/config.ini"
+#     # section_name = "TemplateReport"
+#     section_name = "TemplateBreed"
+#     mass_replace(config_file, section_name)
 
 
 if __name__ == "__main__":
-    config = configparser.ConfigParser()
+    if len(sys.argv) != 3:
+        print("Usage: textEdit_v2.py <config_ini_path> <section_name>")
+        sys.exit(1)
 
-    # Проверяем, существует ли файл по указанному пути
-    if not os.path.exists(INI_PATH):
-        print(f"ОШИБКА: Файл конфигурации не найден по адресу: {INI_PATH}")
-        exit(1)
-
-    # Читаем конфиг
-    config.read(INI_PATH, encoding='utf-8')
-
-    try:
-        # Извлекаем пути из секции [TemplateBreed]
-        json_file = config['TemplateBreed']['json']
-        docx_file = config['TemplateBreed']['copy']
-
-        mass_replace(json_file, docx_file)
-
-    except KeyError as e:
-        print(f"ОШИБКА: В ini-файле отсутствует ключ или секция: {e}")
-    except Exception as e:
-        print(f"ПРОИЗОШЛА ОШИБКА: {e}")
+    config_file = sys.argv[1]
+    section_name = sys.argv[2]
+    mass_replace(config_file, section_name)

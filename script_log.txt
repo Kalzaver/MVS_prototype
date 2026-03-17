@@ -1,0 +1,1 @@
+2026-03-17 23:42:27.079740: Запуск с аргументами ['C:\\treeFrogProject\\myapp\\wordtempl\\textEdit_v2.py']

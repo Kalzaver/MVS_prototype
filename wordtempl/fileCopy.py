@@ -1,33 +1,36 @@
+# fileCopy.py (обновленный)
 import configparser
 import os
+import sys
 from docx import Document
 
 INI_PATH = r'C:/treeFrogProject/myapp/config.ini'
 
 def copy_file(orig_file_path, copy_file_path):
-    doc = Document(orig_file_path)
-    doc.save(copy_file_path)
-    print("================ \n" + "copying finished \n" + "================ \n")
+    try:
+        doc = Document(orig_file_path)
+        doc.save(copy_file_path)
+        print(f"Копирование завершено: {copy_file_path}")
+    except Exception as e:
+        print(f"ОШИБКА копирования: {e}")
 
+
+# ... начало файла как у вас ...
 
 if __name__ == "__main__":
+    section_name = "TemplateBreed"
+    if len(sys.argv) > 1:
+        section_name = sys.argv[1]
+
     config = configparser.ConfigParser()
-
-    if not os.path.exists(INI_PATH):
-        print(f"ОШИБКА: Файл конфигурации не найден по адресу: {INI_PATH}")
-        exit(1)
-
-    # Читаем конфиг (секция [TemplateBreed])
+    # ... проверка существования и read ...
     config.read(INI_PATH, encoding='utf-8')
 
     try:
-        # Берём пути из соответствующих ключей в ini
-        u_orig_file_path = config['TemplateBreed']['template']
-        u_copy_file_path = config['TemplateBreed']['copy']
-
+        u_orig_file_path = config[section_name]['template']
+        u_copy_file_path = config[section_name]['copy']
         copy_file(u_orig_file_path, u_copy_file_path)
-
     except KeyError as e:
-        print(f"ОШИБКА: В ini-файле не найден ключ: {e}")
+        print(f"ОШИБКА: В ini-файле не найден ключ для секции {section_name}: {e}")
     except Exception as e:
         print(f"ПРОИЗОШЛА ОШИБКА: {e}")

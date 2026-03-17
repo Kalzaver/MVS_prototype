@@ -11,11 +11,11 @@ bool WebController::loadConfig()
 {
     QSettings settings("C:/treeFrogProject/myapp/config.ini", QSettings::IniFormat);
     m_pythonPath = settings.value("General/python_path").toString();
-    m_templatePath = settings.value("TemplateBreed/template").toString();
+    /*m_templatePath = settings.value("TemplateBreed/template").toString();
     m_copyPath = settings.value("TemplateBreed/copy").toString();
     m_jsonPath = settings.value("TemplateBreed/json").toString();
     m_scriptPath = settings.value("TemplateBreed/script").toString();
-    m_scriptPathCopy = settings.value("TemplateBreed/script_copy").toString();
+    m_scriptPathCopy = settings.value("TemplateBreed/script_copy").toString();*/
     return true;
 }
 
@@ -44,45 +44,69 @@ void WebController::mainReport()
     if (newTitle.isEmpty())
         newTitle = "Заполнение отчёта главного судьи";
 
-    texport(newTitle);   // передаём в шаблон
+    texport(newTitle);
+
+    loadConfigForSection("TemplateReport");
+    QString pathValue = m_scriptPath;
+
+    if (pathValue.isEmpty())
+        newTitle = "тут пусто";
+
+    texport(pathValue);
     render("reportpage");
 }
 
-void WebController::copyScript()
+void WebController::copyScriptForSection(const QString& section)
 {
-    // Удаляем старую копию, если существует
-    if (QFile::exists(m_copyPath)) 
+    loadConfigForSection(section);
+
+    if (QFile::exists(m_copyPath))
         QFile::remove(m_copyPath);
 
-    // Копируем файл синхронно
-    if (!QFile::copy(m_templatePath, m_copyPath)) 
-    {
-        qWarning() << "Не удалось скопировать файл:" << m_templatePath;
-    }
-    else 
-    {
-        qDebug() << "Файл скопирован успешно:" << m_copyPath;
-    }
+    QFile::copy(m_templatePath, m_copyPath);
+
+    //QProcess process;
+    //QStringList args = { m_scriptPathCopy, section };
+    //process.start(m_pythonPath, args); // Correct invocation
+    //process.waitForFinished(); // Ensure the process completes
 }
 
-void WebController::replaceScript()
+void WebController::replaceScriptForSection(const QString& section)
 {
-    QString python = "C:/Users/lukan/AppData/Local/Programs/Python/Python312/python.exe";
-    QString script = "C:/treeFrogProject/myapp/wordtempl/textEdit_v2.py";
-    QProcess::startDetached(python, { script });
+    loadConfigForSection(section);
+
+    QStringList args;
+    args << m_scriptPath << m_configPath << section;
+
+    QProcess::startDetached(m_pythonPath, args);
+}
+
+bool WebController::loadConfigForSection(const QString& section)
+{
+    QSettings settings("C:/treeFrogProject/myapp/config.ini", QSettings::IniFormat);
+
+    m_pythonPath = settings.value("General/python_path").toString();
+    m_configPath = "C:/treeFrogProject/myapp/config.ini";
+    m_templatePath = settings.value(section + "/template").toString();
+    m_copyPath = settings.value(section + "/copy").toString();
+    m_jsonPath = settings.value(section + "/json").toString();
+    m_scriptPath = settings.value(section + "/script").toString();
+    m_scriptPathCopy = settings.value(section + "/script_copy").toString();
+
+    return true;
 }
 
 void WebController::submitForm()
 {
-    loadConfig();
-
     if (httpRequest().method() != Tf::Post) 
     {
         renderErrorResponse(Tf::NotFound);
         return;
     }
 
-    copyScript();
+    //copyScript();
+    QString section = "TemplateBreed";
+    copyScriptForSection(section);
 
     QVariantMap data = httpRequest().formItems();
 
@@ -167,19 +191,73 @@ void WebController::submitForm()
         file.write(doc.toJson());
         file.close();
     }
-    else 
+
+    //replaceScript();
+    replaceScriptForSection(section);
+
+    redirect(urla("index"));
+}
+
+void WebController::submitReport()
+{
+    if (httpRequest().method() != Tf::Post)
     {
-        qWarning() << "Не удалось открыть файл для записи JSON";
+        renderErrorResponse(Tf::NotFound);
+        return;
     }
 
-    replaceScript();
+    QString section = "TemplateReport";
 
+    loadConfigForSection(section);
+    copyScriptForSection(section);
+
+    QVariantMap data = httpRequest().formItems();
+    QJsonDocument doc = QJsonDocument::fromVariant(data);
+
+    QFile file(m_jsonPath);
+
+    if (file.open(QIODevice::WriteOnly)) {
+        file.write(doc.toJson());
+        file.close();
+        qDebug() << "JSON сохранён в:" << m_jsonPath;
+    }
+    else {
+        qWarning() << "Не удалось открыть файл для записи JSON:" << m_jsonPath;
+        qWarning() << "Ошибка:" << file.errorString();
+    }
+
+    replaceScriptForSection(section);
+    
     redirect(urla("index"));
 }
 
 bool WebController::preFilter()
 {
     return true;
+}
+
+void WebController::copyScript()
+{
+    // Удаляем старую копию, если существует
+    if (QFile::exists(m_copyPath))
+        QFile::remove(m_copyPath);
+
+    // Копируем файл синхронно
+    if (!QFile::copy(m_templatePath, m_copyPath))
+    {
+        qWarning() << "Не удалось скопировать файл:" << m_templatePath;
+    }
+    else
+    {
+        qDebug() << "Файл скопирован успешно:" << m_copyPath;
+    }
+}
+
+void WebController::replaceScript()
+{
+    QString python = "C:/Users/lukan/AppData/Local/Programs/Python/Python312/python.exe";
+    QString script = "C:/treeFrogProject/myapp/wordtempl/textEdit_v2.py";
+    QProcess::startDetached(python, { script });
 }
 
 // Don't remove below this line
