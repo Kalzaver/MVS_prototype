@@ -183,7 +183,6 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="applicationcontroller.h" />
-    <QtMoc Include="blogcontroller.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include=".obj\moc_predefs.h.cbt">
@@ -200,6 +199,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="webcontroller.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="blogcontroller.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />

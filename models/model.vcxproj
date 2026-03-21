@@ -177,15 +177,21 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include=".obj\moc_blogobject.cpp" />
+    <ClCompile Include="blogservice.cpp" />
+    <ClCompile Include="breeddataservice.cpp" />
     <ClCompile Include="breedmodel.cpp" />
     <ClCompile Include="objects\blog.cpp" />
-    <ClCompile Include="blogservice.cpp" />
+    <ClCompile Include="objects\breeddata.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="blogservice.h" />
+    <ClInclude Include="breeddataservice.h" />
     <ClInclude Include="breedmodel.h" />
     <ClInclude Include="objects\blog.h" />
-    <QtMoc Include="sqlobjects\blogobject.h" />
-    <ClInclude Include="blogservice.h" />
+    <ClInclude Include="objects\breeddata.h" />
+    <ClInclude Include="sqlobjects\blogobject.h" />
+    <QtMoc Include="sqlobjects\breeddataobject.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include=".obj\moc_predefs.h.cbt">

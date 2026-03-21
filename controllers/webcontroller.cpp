@@ -7,18 +7,6 @@
 #include <QJsonObject>
 #include <QSettings>
 
-bool WebController::loadConfig()
-{
-    QSettings settings("C:/treeFrogProject/myapp/config.ini", QSettings::IniFormat);
-    m_pythonPath = settings.value("General/python_path").toString();
-    /*m_templatePath = settings.value("TemplateBreed/template").toString();
-    m_copyPath = settings.value("TemplateBreed/copy").toString();
-    m_jsonPath = settings.value("TemplateBreed/json").toString();
-    m_scriptPath = settings.value("TemplateBreed/script").toString();
-    m_scriptPathCopy = settings.value("TemplateBreed/script_copy").toString();*/
-    return true;
-}
-
 void WebController::index()
 {
     // write code
@@ -64,11 +52,6 @@ void WebController::copyScriptForSection(const QString& section)
         QFile::remove(m_copyPath);
 
     QFile::copy(m_templatePath, m_copyPath);
-
-    //QProcess process;
-    //QStringList args = { m_scriptPathCopy, section };
-    //process.start(m_pythonPath, args); // Correct invocation
-    //process.waitForFinished(); // Ensure the process completes
 }
 
 void WebController::replaceScriptForSection(const QString& section)
@@ -85,7 +68,7 @@ bool WebController::loadConfigForSection(const QString& section)
 {
     QSettings settings("C:/treeFrogProject/myapp/config.ini", QSettings::IniFormat);
 
-    m_pythonPath = settings.value("General/python_path").toString();
+    m_pythonPath = settings.value("gen/python_path").toString();
     m_configPath = "C:/treeFrogProject/myapp/config.ini";
     m_templatePath = settings.value(section + "/template").toString();
     m_copyPath = settings.value(section + "/copy").toString();
@@ -104,7 +87,6 @@ void WebController::submitForm()
         return;
     }
 
-    //copyScript();
     QString section = "TemplateBreed";
     copyScriptForSection(section);
 
@@ -156,25 +138,25 @@ void WebController::submitForm()
     
     data.remove("noiseReaction");
 
-    QStringList noise2 = { "eee", "fff", "ggg", "hhh" };
+    QStringList noise2 = { "eee", "fff", "ggg", "hhh", "iii" };
     QString selected2 = data.value("noise2").toString();
     for (const QString& opt : noise2) 
         data[opt] = (opt == selected2) ? "+" : "-";
   
     data.remove("noise2");
 
-    QStringList teethObsv1 = { "kkk", "lll", "mmm", "nnn", "ooo"};
+    QStringList teethObsv1 = { "jjj", "kkk", "lll", "mmm", "nnn", "ooo" };
     QString selected3 = data.value("teethObsv1").toString();
     for (const QString& opt : teethObsv1) 
         data[opt] = (opt == selected3) ? "+" : "-";
     
     data.remove("teethObsv1");
 
-    QStringList teethObsv2 = { "qqq", "rrr", "sss", "ttt", "uuu" };
+    QStringList teethObsv2 = { "ppp", "qqq", "rrr", "sss", "ttt", "uuu" };
     QString selected4 = data.value("teethObsv2").toString();
     for (const QString& opt : teethObsv2) 
         data[opt] = (opt == selected4) ? "+" : "-";
-    
+        
     data.remove("teethObsv2");
 
     QStringList showtime = { "vvv", "www", "xxx", "yyy", "zzz" };
@@ -192,7 +174,6 @@ void WebController::submitForm()
         file.close();
     }
 
-    //replaceScript();
     replaceScriptForSection(section);
 
     redirect(urla("index"));
@@ -236,29 +217,29 @@ bool WebController::preFilter()
     return true;
 }
 
-void WebController::copyScript()
-{
-    // Удаляем старую копию, если существует
-    if (QFile::exists(m_copyPath))
-        QFile::remove(m_copyPath);
+//void WebController::copyScript()
+//{
+//    // Удаляем старую копию, если существует
+//    if (QFile::exists(m_copyPath))
+//        QFile::remove(m_copyPath);
+//
+//    // Копируем файл синхронно
+//    if (!QFile::copy(m_templatePath, m_copyPath))
+//    {
+//        qWarning() << "Не удалось скопировать файл:" << m_templatePath;
+//    }
+//    else
+//    {
+//        qDebug() << "Файл скопирован успешно:" << m_copyPath;
+//    }
+//}
 
-    // Копируем файл синхронно
-    if (!QFile::copy(m_templatePath, m_copyPath))
-    {
-        qWarning() << "Не удалось скопировать файл:" << m_templatePath;
-    }
-    else
-    {
-        qDebug() << "Файл скопирован успешно:" << m_copyPath;
-    }
-}
-
-void WebController::replaceScript()
-{
-    QString python = "C:/Users/lukan/AppData/Local/Programs/Python/Python312/python.exe";
-    QString script = "C:/treeFrogProject/myapp/wordtempl/textEdit_v2.py";
-    QProcess::startDetached(python, { script });
-}
+//void WebController::replaceScript()
+//{
+//    QString python = "C:/Users/lukan/AppData/Local/Programs/Python/Python312/python.exe";
+//    QString script = "C:/treeFrogProject/myapp/wordtempl/textEdit_v2.py";
+//    QProcess::startDetached(python, { script });
+//}
 
 // Don't remove below this line
 T_DEFINE_CONTROLLER(WebController)

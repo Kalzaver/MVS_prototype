@@ -26,8 +26,7 @@ private:
 
 
 public slots:
-    
-    bool loadConfig();
+
     void index();
     void changePage();
     void mainReport();
@@ -40,7 +39,5 @@ public slots:
     void submitForm();
     void submitReport();
     bool preFilter();
-    void copyScript();
-    void replaceScript();
 };
 

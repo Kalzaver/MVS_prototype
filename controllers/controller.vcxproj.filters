@@ -30,22 +30,22 @@
     <ClCompile Include="applicationcontroller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="blogcontroller.cpp">
+    <ClCompile Include="webcontroller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="webcontroller.cpp">
-      <Filter>Generated Files</Filter>
+    <ClCompile Include="blogcontroller.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="applicationcontroller.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="blogcontroller.h">
+    <QtMoc Include="webcontroller.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="webcontroller.h">
-      <Filter>Generated Files</Filter>
+    <QtMoc Include="blogcontroller.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

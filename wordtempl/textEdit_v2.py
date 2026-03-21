@@ -4,6 +4,8 @@ import configparser
 import os
 from docx import Document
 
+INI_PATH = r'C:/treeFrogProject/myapp/config.ini'
+
 def mass_replace(config_path, section):
     print(f"\n=== Замена начата (Конфиг: {config_path}, Секция: {section}) ===")
 
@@ -65,8 +67,8 @@ def mass_replace(config_path, section):
 
 # if __name__ == "__main__":
 #     config_file = "C:/treeFrogProject/myapp/config.ini"
-#     # section_name = "TemplateReport"
-#     section_name = "TemplateBreed"
+#     section_name = "TemplateReport"
+#     # section_name = "TemplateBreed"
 #     mass_replace(config_file, section_name)
 
 
@@ -77,4 +79,5 @@ if __name__ == "__main__":
 
     config_file = sys.argv[1]
     section_name = sys.argv[2]
+    # print(config_file, section_name)
     mass_replace(config_file, section_name)
