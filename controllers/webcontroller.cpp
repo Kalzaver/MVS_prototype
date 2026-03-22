@@ -1,4 +1,6 @@
 #include "webcontroller.h"
+#include "breeddataservice.h"
+#include "C:/treeFrogProject/myapp/models/objects/breeddata.h"
 
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
@@ -173,6 +175,22 @@ void WebController::submitForm()
         file.write(doc.toJson());
         file.close();
     }
+
+    QString breed = data.value("NameOfTheBreed").toString();
+    double weight = data.value("PutWeightHere").toString().toDouble();
+    double height = data.value("PutHieghtHere").toString().toDouble();
+    double puthere = data.value("PutHere").toString().toDouble();
+    double elbow = data.value("PutElbowHere").toString().toDouble();
+    double depth = data.value("PutDepthHere").toString().toDouble();
+    double chestaround = data.value("PutChestHere").toString().toDouble();
+    double cirsimaround = data.value("PutCircimferenceHere").toString().toDouble();
+    double headlength = data.value("PutHeadLengthHere").toString().toDouble();
+    double muzzle = data.value("PutMuzzleHere").toString().toDouble();
+    double skull = data.value("PutSkullHere").toString().toDouble();
+    double founding = data.value("PutfoundingHere").toString().toDouble();
+
+    BreedData::create(breed, weight, height, puthere, elbow, depth,
+        chestaround, cirsimaround, headlength, muzzle, skull, founding);
 
     replaceScriptForSection(section);
 

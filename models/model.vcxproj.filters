@@ -30,9 +30,6 @@
     <ClCompile Include="breedmodel.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="objects\breeddata.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="breeddataservice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -43,6 +40,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="objects\blog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\breeddata.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
