@@ -27,22 +27,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="blog_createView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="blog_indexView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="blog_saveView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="blog_showView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="web_indexView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="web_changeView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="account_formView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

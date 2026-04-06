@@ -161,10 +161,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="blog_createView.cpp" />
-    <ClCompile Include="blog_indexView.cpp" />
-    <ClCompile Include="blog_saveView.cpp" />
-    <ClCompile Include="blog_showView.cpp" />
+    <ClCompile Include="account_formView.cpp" />
     <ClCompile Include="web_changeView.cpp" />
     <ClCompile Include="web_indexView.cpp" />
   </ItemGroup>

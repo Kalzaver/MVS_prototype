@@ -177,20 +177,19 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include=".obj\moc_blogobject.cpp" />
-    <ClCompile Include="blogservice.cpp" />
     <ClCompile Include="breeddataservice.cpp" />
     <ClCompile Include="breedmodel.cpp" />
-    <ClCompile Include="objects\blog.cpp" />
     <ClCompile Include="objects\breeddata.cpp" />
+    <ClCompile Include="objects\user.cpp" />
+    <ClCompile Include="userservice.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="blogservice.h" />
     <ClInclude Include="breeddataservice.h" />
     <ClInclude Include="breedmodel.h" />
-    <ClInclude Include="objects\blog.h" />
     <ClInclude Include="objects\breeddata.h" />
-    <ClInclude Include="sqlobjects\blogobject.h" />
+    <ClInclude Include="objects\user.h" />
+    <QtMoc Include="sqlobjects\userobject.h" />
+    <ClInclude Include="userservice.h" />
     <QtMoc Include="sqlobjects\breeddataobject.h" />
   </ItemGroup>
   <ItemGroup>

@@ -33,16 +33,13 @@
     <ClCompile Include="breeddataservice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include=".obj\moc_blogobject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="blogservice.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="objects\blog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="objects\breeddata.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\user.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="userservice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -56,13 +53,10 @@
     <ClInclude Include="breeddataservice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="objects\blog.h">
+    <ClInclude Include="objects\user.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sqlobjects\blogobject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="blogservice.h">
+    <ClInclude Include="userservice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -73,6 +67,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="sqlobjects\breeddataobject.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="sqlobjects\userobject.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

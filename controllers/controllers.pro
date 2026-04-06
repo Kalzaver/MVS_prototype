@@ -21,3 +21,5 @@ HEADERS += cdatamanagercontroller.h
 SOURCES += cdatamanagercontroller.cpp
 HEADERS += webcontroller.h
 SOURCES += webcontroller.cpp
+HEADERS += accountcontroller.h
+SOURCES += accountcontroller.cpp

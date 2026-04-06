@@ -1,5 +1,6 @@
 #include "webcontroller.h"
 #include "breeddataservice.h"
+//#include "C:/treeFrogProject/myapp/models/objects/user.h"
 #include "C:/treeFrogProject/myapp/models/objects/breeddata.h"
 
 #include <QNetworkAccessManager>
@@ -11,6 +12,17 @@
 
 void WebController::index()
 {
+    preFilter();
+
+    //QString username = identityKeyOfLoginUser();
+    //User loginUser = User::getByIdentityKey(username);
+
+    QString accountStatus = httpRequest().queryItemValue("title");
+    if (accountStatus.isEmpty())
+        accountStatus = "ОТОБРАЖЕНИЕ";
+
+    texport(accountStatus);   // передаём в шаблон
+
     // write code
 	QString title = "Вы в главном меню"; // Или данные из БД
 	texport(title); // Экспортируем переменную в View
@@ -195,6 +207,7 @@ void WebController::submitForm()
     replaceScriptForSection(section);
 
     redirect(urla("index"));
+    //попробовать использовть функции хещирования для сохранения пароля в БД не в открытом виде
 }
 
 void WebController::submitReport()
@@ -232,32 +245,14 @@ void WebController::submitReport()
 
 bool WebController::preFilter()
 {
-    return true;
+    // Проверяем, залогинен ли пользователь
+    if (!isUserLoggedIn()) {
+        // Если нет, перенаправляем на форму входа
+        redirect(urla("form"));
+        return false;   // прерываем выполнение действия
+    }
+    return true; // продолжаем
 }
-
-//void WebController::copyScript()
-//{
-//    // Удаляем старую копию, если существует
-//    if (QFile::exists(m_copyPath))
-//        QFile::remove(m_copyPath);
-//
-//    // Копируем файл синхронно
-//    if (!QFile::copy(m_templatePath, m_copyPath))
-//    {
-//        qWarning() << "Не удалось скопировать файл:" << m_templatePath;
-//    }
-//    else
-//    {
-//        qDebug() << "Файл скопирован успешно:" << m_copyPath;
-//    }
-//}
-
-//void WebController::replaceScript()
-//{
-//    QString python = "C:/Users/lukan/AppData/Local/Programs/Python/Python312/python.exe";
-//    QString script = "C:/treeFrogProject/myapp/wordtempl/textEdit_v2.py";
-//    QProcess::startDetached(python, { script });
-//}
 
 // Don't remove below this line
 T_DEFINE_CONTROLLER(WebController)

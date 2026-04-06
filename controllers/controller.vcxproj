@@ -177,8 +177,8 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="accountcontroller.cpp" />
     <ClCompile Include="applicationcontroller.cpp" />
-    <ClCompile Include="blogcontroller.cpp" />
     <ClCompile Include="webcontroller.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -201,7 +201,7 @@
     <QtMoc Include="webcontroller.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="blogcontroller.h" />
+    <QtMoc Include="accountcontroller.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />

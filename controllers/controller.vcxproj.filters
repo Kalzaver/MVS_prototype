@@ -33,7 +33,7 @@
     <ClCompile Include="webcontroller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="blogcontroller.cpp">
+    <ClCompile Include="accountcontroller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,7 +44,7 @@
     <QtMoc Include="webcontroller.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="blogcontroller.h">
+    <QtMoc Include="accountcontroller.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
