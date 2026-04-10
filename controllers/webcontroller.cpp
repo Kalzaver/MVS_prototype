@@ -1,6 +1,6 @@
 #include "webcontroller.h"
 #include "breeddataservice.h"
-//#include "C:/treeFrogProject/myapp/models/objects/user.h"
+#include "C:/treeFrogProject/myapp/models/objects/user.h"
 #include "C:/treeFrogProject/myapp/models/objects/breeddata.h"
 
 #include <QNetworkAccessManager>
@@ -14,24 +14,20 @@ void WebController::index()
 {
     preFilter();
 
-    //QString username = identityKeyOfLoginUser();
-    //User loginUser = User::getByIdentityKey(username);
+    QString username = identityKeyOfLoginUser();
+    User loginUser = User::getByIdentityKey(username);
 
-    QString accountStatus = httpRequest().queryItemValue("title");
-    if (accountStatus.isEmpty())
-        accountStatus = "ОТОБРАЖЕНИЕ";
+    texport(username);
+    //texport(loginUser);
 
-    texport(accountStatus);   // передаём в шаблон
 
-    // write code
-	QString title = "Вы в главном меню"; // Или данные из БД
-	texport(title); // Экспортируем переменную в View
+	QString title = "Вы в главном меню"; 
+	texport(title);
 	render();
 }
 
 void WebController::changePage()
 {
-    // Пример: получаем параметр из запроса (если передавали через GET)
     QString newTitle = httpRequest().queryItemValue("title");
     if (newTitle.isEmpty())
         newTitle = "Заполнение документа по племенному смотру";
@@ -245,13 +241,12 @@ void WebController::submitReport()
 
 bool WebController::preFilter()
 {
-    // Проверяем, залогинен ли пользователь
     if (!isUserLoggedIn()) {
-        // Если нет, перенаправляем на форму входа
-        redirect(urla("form"));
-        return false;   // прерываем выполнение действия
+        //redirect(urla("form"));
+        redirect(QUrl("http://localhost:8800/account/form"));
+        return false;
     }
-    return true; // продолжаем
+    return true;
 }
 
 // Don't remove below this line
