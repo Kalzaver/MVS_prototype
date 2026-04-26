@@ -36,6 +36,9 @@
     <ClCompile Include="account_formView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="account_registrationView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="blog_createView.moc">

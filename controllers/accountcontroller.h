@@ -11,6 +11,7 @@ public:
 
 public slots:
     void form();
+    void regist();
     void login();
     void logout();
 };

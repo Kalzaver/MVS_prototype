@@ -6,6 +6,9 @@
 <body>
   <h1>Login Form</h1>
   <div style="color: red;"><%==$message %></div>
+
+  <button type="button"><%== linkTo("Регистрация", urla("regist")) %></button>
+
   <%== formTag(urla("login")); %>
     <div>
       User Name: <input type="text" name="username" value="" />

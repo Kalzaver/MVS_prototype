@@ -1,5 +1,7 @@
 HEADERS += account_formView.moc
 SOURCES += account_formView.cpp
+HEADERS += account_registrationView.moc
+SOURCES += account_registrationView.cpp
 HEADERS += web_changeView.moc
 SOURCES += web_changeView.cpp
 HEADERS += web_changeStatusView.moc
@@ -11,6 +13,7 @@ SOURCES += web_reportpageView.cpp
 
 # include view files in the project
 views.files += ../account/form.erb
+views.files += ../account/registration.erb
 views.files += ../web/change.erb
 views.files += ../web/changeStatus.erb
 views.files += ../web/index.erb

@@ -162,6 +162,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="account_formView.cpp" />
+    <ClCompile Include="account_registrationView.cpp" />
     <ClCompile Include="web_changeView.cpp" />
     <ClCompile Include="web_indexView.cpp" />
   </ItemGroup>

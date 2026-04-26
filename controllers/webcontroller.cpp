@@ -244,6 +244,7 @@ bool WebController::preFilter()
     if (!isUserLoggedIn()) {
         //redirect(urla("form"));
         redirect(QUrl("http://localhost:8800/account/form"));
+        //redirect(QUrl("http://localhost:8800/account/registration"));
         return false;
     }
     return true;
