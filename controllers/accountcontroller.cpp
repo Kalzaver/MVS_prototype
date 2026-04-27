@@ -21,35 +21,51 @@ void AccountController::regist()
 
     // Валидация
     if (username.isEmpty() || password.isEmpty()) {
-        QString message = "Login and password must not be empty";
+        QString message = "Поля логина и пароля обязаны быть заполненными";
         texport(message);
         render("registration");
-        return;
+        //return;
     }
 
     // Проверка существования пользователя
     User existing = User::getByIdentityKey(username);
     if (!existing.isNull()) {
-        QString message = "User already exists";
-        texport(message);
+        QString message_UN = "логин не подходит";
+        texport(message_UN);
         render("registration");
-        return;
+        //return;
+    }
+
+    if (password.length() < 5) {
+        QString message_PW1 = "пароль меньше 5 символов";
+        texport(message_PW1);
+        render("registration");
+        //return;
+    }
+
+    if (password.length() < 5 && password2.isEmpty()) {
+        QString message_PW1 = "пароль меньше 5 символов";
+        QString message_PW2 = "пароль не был введён повторно";
+        texport(message_PW2);
+        texport(message_PW1);
+        render("registration");
+        //return;
     }
 
     if (password != password2) {
-        QString message = "passwords aren't the same";
-        texport(message);
+        QString message_PW2 = "пароли не совпадают";
+        texport(message_PW2);
         render("registration");
-        return;
+        //return;
     }
 
     // Создание пользователя (пароль сохраняется как есть)
     User user = User::create(username, password);
     if (user.isNull()) {
-        QString message = "Failed to create user";
+        QString message = "ошибка в создании пользователя. Повторите попытку позже";
         texport(message);
         render("registration");
-        return;
+        //return;
     }
 
     // Автоматический вход нового пользователя
@@ -70,7 +86,7 @@ void AccountController::login()
         redirect(QUrl("http://localhost:8800/Web/index"));
     }
     else {
-        QString message = "Login failed";
+        QString message = "Ошибка входа";
         texport(message);
         render("form");
     }
